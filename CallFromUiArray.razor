@@ -1,0 +1,36 @@
+@page "/execute"
+@using BlazorApp1.Services
+@rendermode InteractiveServer
+
+<h3>Execute Word Template Service</h3>
+
+<button @onclick="ExecuteMethod">Execute</button>
+
+@code {
+    [Inject]
+    public WordTemplateService? Service { get; set; }
+
+    private void ExecuteMethod()
+    {
+        // Use the actual path where your Word template is located
+        var templatePath = @"C:\Users\Deepak\Downloads\crt.docx";
+        // Specify the path where you want to save the output file
+        var outputPath = @"C:\Users\Deepak\Downloads\output1.docx";
+        // The contents you want to insert at the bookmarks
+        var contents = new string[] { "Seattle, WA", "Another Content", "More Content" };
+        // The names of the bookmarks in your Word document
+        var bookmarkNames = new string[] { "city", "anotherBookmark", "moreBookmark" };
+
+        // Ensure the arrays are of the same length
+        if (contents.Length != bookmarkNames.Length)
+        {
+            // Handle the error - the arrays must be of the same length
+            return;
+        }
+
+        // Call the method to insert text at the bookmarks
+        Service!.InsertTextAtBookmarks(templatePath, outputPath, contents, bookmarkNames);
+
+        // Optionally, you can display a success message or perform other actions after execution.
+    }
+}
